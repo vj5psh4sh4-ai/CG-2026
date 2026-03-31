@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+
+<!-- Perplexity Computer Attribution — SEO Meta Tags -->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le chemin de l'idée — Comptoir Gruérien 2026</title>
+  <meta name="description" content="Décris ton idée et découvre comment la transformer en projet, produit ou formation.">
+
+  <!-- Fonts: Cabinet Grotesk (display) + General Sans (body) from Fontshare -->
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ======== HEADER ======== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-group">
+        <!-- SVG Logo inline — ampoule stylisée -->
+        <svg class="logo-mark" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <!-- Ampoule body -->
+          <path d="M20 6 C13.4 6 8 11.4 8 18 C8 22.8 10.8 26.9 15 28.8 L15 32 C15 33.1 15.9 34 17 34 L23 34 C24.1 34 25 33.1 25 32 L25 28.8 C29.2 26.9 32 22.8 32 18 C32 11.4 26.6 6 20 6 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          <!-- Filament lines -->
+          <line x1="17" y1="34" x2="23" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Shine -->  
+          <path d="M14 15 C14.5 12.5 17 10.5 20 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+        <div class="logo-text">
+          <span class="logo-title">Le chemin de l'idée</span>
+          <span class="logo-sub">Comptoir Gruérien · Bulle 2026</span>
+        </div>
+      </div>
+      <button class="theme-toggle" data-theme-toggle aria-label="Basculer le thème">
+        <!-- icon inserted by JS -->
+      </button>
+    </div>
+  </header>
+
+  <!-- ======== HERO ======== -->
+  <main class="main-content">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-badge">HEIA-FR · UNIFR · Innovation</div>
+        <h1 class="hero-title">Quelle idée veux-tu<br>explorer aujourd'hui&nbsp;?</h1>
+        <p class="hero-lead">Décris ton idée en une ou deux phrases. Notre assistant analyse son potentiel, propose des pistes de formation et des idées de prototypage.</p>
+      </div>
+    </section>
+
+    <!-- ======== FORM ======== -->
+    <section class="form-section">
+      <div class="form-card">
+        <label for="idea-input" class="form-label">Décris ton idée</label>
+        <textarea
+          id="idea-input"
+          class="idea-textarea"
+          rows="4"
+          placeholder="Ex. : Je voudrais créer une application qui aide les agriculteurs à surveiller l'humidité de leurs sols en temps réel…"
+          maxlength="1000"
+          aria-describedby="char-count"
+        ></textarea>
+        <div class="form-footer">
+          <span id="char-count" class="char-count">0 / 1000</span>
+          <button id="analyze-btn" class="btn-primary" disabled>
+            <span class="btn-text">Analyser mon idée</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== RESULT ======== -->
+    <section id="result-section" class="result-section" hidden aria-live="polite">
+      <div class="result-card">
+        <div id="result-content" class="result-content"></div>
+        <div class="result-actions">
+          <button id="reset-btn" class="btn-secondary">Analyser une nouvelle idée</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== ERROR ======== -->
+    <div id="error-banner" class="error-banner" hidden role="alert">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Impossible de contacter le service d'analyse pour l'instant. Merci de réessayer plus tard.</span>
+    </div>
+  </main>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-partners">Événement organisé avec le soutien de HEIA-FR et de l'Université de Fribourg</p>
+      <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer" class="footer-credit">
+        Created with Perplexity Computer
+      </a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
