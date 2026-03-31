@@ -152,8 +152,11 @@ async def analyze_idea(req: IdeaRequest):
     except httpx.TimeoutException:
         raise HTTPException(status_code=504, detail="Timeout lors de l'appel à Gemini.")
     except httpx.HTTPStatusError as e:
+        print("Gemini API error status:", e.response.status_code)
+        print("Gemini API error body:", e.response.text)
         raise HTTPException(status_code=502, detail=f"Erreur Gemini API: {e.response.text}")
     except Exception as e:
+        print("Unhandled exception:", repr(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
