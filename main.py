@@ -5,16 +5,26 @@ Comptoir Gruérien, Bulle 2026
 
 import os
 import httpx
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+# Load environment variables from .env
+load_dotenv()
+
 # --- Gemini API config ---
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyDOSlt0ZurjvDgCva-XfCyFDj10kTU_JmQ")
-GEMINI_MODEL   = "gemini-2.5-flash"
-GEMINI_URL     = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+GEMINI_MODEL = "gemini-2.5-flash"
+
+if not GEMINI_API_KEY:
+    raise RuntimeError("GEMINI_API_KEY is not set in the .env file or environment.")
+
+GEMINI_URL = (
+    f"https://generativelanguage.googleapis.com/v1beta/models/"
+    f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
+)
 
 app = FastAPI(title="Le chemin de l'idée")
 
@@ -95,7 +105,8 @@ Ton style :
 - Clair, accessible, pédagogique, sans jargon inutile.
 - Pas d'emojis.
 - Réponse courte, structurée avec ces titres EXACTS.
-- Tu ne poses PAS de questions : tu produis directement la meilleure synthèse possible."""
+- Tu ne poses PAS de questions : tu produis directement la meilleure synthèse possible.
+"""
 
 
 class IdeaRequest(BaseModel):
@@ -107,27 +118,39 @@ async def analyze_idea(req: IdeaRequest):
     if not req.idea or not req.idea.strip():
         raise HTTPException(status_code=400, detail="L'idée ne peut pas être vide.")
 
-    try:
-        payload = {
-            "system_instruction": {
-                "parts": [{"text": SYSTEM_PROMPT}]
-            },
-            "contents": [
-                {"role": "user", "parts": [{"text": req.idea.strip()}]}
-            ],
-            "generationConfig": {
-                "maxOutputTokens": 2048,
-                "temperature": 0.4
-            }
+    payload = {
+        "system_instruction": {
+            "parts": [{"text": SYSTEM_PROMPT}]
+        },
+        "contents": [
+            {"role": "user", "parts": [{"text": req.idea.strip()}]}
+        ],
+        "generationConfig": {
+            "maxOutputTokens": 2048,
+            "temperature": 0.4
         }
+    }
+
+    try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             resp = await client.post(GEMINI_URL, json=payload)
             resp.raise_for_status()
             data = resp.json()
 
-        response_text = data["candidates"][0]["content"]["parts"][0]["text"]
+        candidates = data.get("candidates", [])
+        if not candidates:
+            raise HTTPException(status_code=502, detail="Réponse Gemini vide.")
+
+        content = candidates[0].get("content", {})
+        parts = content.get("parts", [])
+        if not parts or "text" not in parts[0]:
+            raise HTTPException(status_code=502, detail="Texte de réponse Gemini introuvable.")
+
+        response_text = parts[0]["text"]
         return {"result": response_text}
 
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=504, detail="Timeout lors de l'appel à Gemini.")
     except httpx.HTTPStatusError as e:
         raise HTTPException(status_code=502, detail=f"Erreur Gemini API: {e.response.text}")
     except Exception as e:
@@ -135,4 +158,4 @@ async def analyze_idea(req: IdeaRequest):
 
 
 # Serve static files
-app.mount("/", StaticFiles(directory="static", html=True))
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
